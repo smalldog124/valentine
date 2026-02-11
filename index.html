@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ปุ่มหนีได้ - สไตล์เป๊ะ</title>
+    <title>Valentine Surprise</title>
     <style>
         body {
             margin: 0;
@@ -11,15 +11,35 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f2f5;
+            /* พื้นหลังรูปภาพที่คุณเลือก */
+            background-image: url('https://cdn.wallpapersafari.com/7/79/zI1ydw.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             font-family: 'Tahoma', sans-serif;
             overflow: hidden;
-            user-select: none; /* กันการคลุมดำตัวหนังสือตอนรีบกด */
+            user-select: none;
+        }
+
+        /* กล่องครอบทั้งหมดให้อยู่ตรงกลาง */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 5;
+        }
+
+        /* ปรับขนาด GIF */
+        .gif-container img {
+            width: 250px; /* ปรับขนาดได้ตามต้องการ */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .button-group {
             display: flex;
-            gap: 15px; /* ระยะห่างระหว่างปุ่มตามรูป */
+            gap: 20px;
             align-items: center;
         }
 
@@ -28,33 +48,40 @@
             font-size: 24px;
             font-weight: bold;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: transform 0.1s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ปุ่มไม่เป็นไร */
         #btn-stay {
-            background-color: #cccccc;
+            background-color: rgba(204, 204, 204, 0.9);
             color: #444;
-            z-index: 5;
+            backdrop-filter: blur(5px);
         }
 
-        /* ปุ่มอยากได้ */
         #btn-move {
-            background-color: #f65f62; /* สีแดงชมพูตามรูป */
+            background-color: #f65f62;
             color: white;
             white-space: nowrap;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10;
+        }
+
+        button:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body onclick="moveButton()">
 
-    <div class="button-group">
-        <button id="btn-stay" onclick="alert('โอเคครับ ไม่เป็นไรน้า'); event.stopPropagation();">ไม่เป็นไร</button>
-        <button id="btn-move" onclick="moveButton(); event.stopPropagation();">อยากได้</button>
+    <div class="main-container">
+        <div class="gif-container">
+            <img src="https://media.tenor.com/7S7V6q3-In8AAAAC/happy-birthday.gif" alt="Surprise GIF">
+        </div>
+
+        <div class="button-group">
+            <button id="btn-stay" onclick="alert('โอเคครับ ไม่เป็นไรน้า'); event.stopPropagation();">ไม่เป็นไร</button>
+            <button id="btn-move" onclick="moveButton(); event.stopPropagation();">อยากได้</button>
+        </div>
     </div>
 
     <script>
@@ -63,23 +90,20 @@
         function moveButton() {
             const btn = document.getElementById('btn-move');
             
-            // ครั้งแรกที่ขยับ จะต้องเปลี่ยนจาก auto layout เป็นพิกัดหน้าจอ (absolute)
             if (isFirstMove) {
                 const rect = btn.getBoundingClientRect();
-                btn.style.position = 'fixed';
+                btn.style.position = 'fixed'; 
                 btn.style.left = rect.left + 'px';
                 btn.style.top = rect.top + 'px';
                 btn.style.margin = '0';
                 isFirstMove = false;
             }
 
-            // คำนวณขอบเขตจอ
             const maxX = window.innerWidth - btn.offsetWidth;
             const maxY = window.innerHeight - btn.offsetHeight;
 
-            // สุ่มตำแหน่ง (หักลบขอบเล็กน้อยเพื่อความสวยงาม)
-            const randomX = Math.max(10, Math.floor(Math.random() * maxX - 10));
-            const randomY = Math.max(10, Math.floor(Math.random() * maxY - 10));
+            const randomX = Math.max(15, Math.floor(Math.random() * (maxX - 15)));
+            const randomY = Math.max(15, Math.floor(Math.random() * (maxY - 15)));
 
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
